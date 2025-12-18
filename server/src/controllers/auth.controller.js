@@ -36,13 +36,10 @@ if (!name || !email || !password) {
           let token = await getToken(user); 
          res.cookie("token", token, {
     httpOnly: true,
-    secure: true,
-    maxAge: 1000*60*60*24, // 24 hours
+   secure: process.env.NODE_ENV === "production",
+    maxAge: 2000*60*60*24, // 24 hours
     sameSite: "strict"
 });
-
-          
-
   
 return res.status(201).json(
      new ApiResponse(201, 
@@ -79,7 +76,7 @@ export const loginUser = asyncHandler(async(req ,res)=>{
     res.cookie("token",token,{
         httpOnly:true,
         secure:true,
-        maxAge:1000*60*60*24,//24 hours
+        maxAge:2000*60*60*24,//3600 seconds
         sameSite:"strict"
     });
     return res.status(200).json(new ApiResponse(200, user, "User logged in successfully"));

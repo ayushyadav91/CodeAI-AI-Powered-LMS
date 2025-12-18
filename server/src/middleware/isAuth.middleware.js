@@ -1,7 +1,9 @@
 import jwt from "jsonwebtoken";
 
 const isAuth = async (req, res, next) => {
-  const token = req.cookies.token;
+  const { token } = req.cookies;
+  console.log(token);
+  console.log(req.cookies);
   if (!token) {
     return res.status(401).json({
       message: "You are not authorized to access this route",
@@ -14,7 +16,9 @@ const isAuth = async (req, res, next) => {
             message: "You are not authorized to access this route",
         });
     }
-    req.user= decoded.user;
+   
+   req.user= decoded;
+
     next();
   } catch (error) {
     res.status(401).json({

@@ -7,6 +7,8 @@ import { serverUrl } from "../App";
 import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../redux/userSlice";
 
 
 const SignUp = () => {
@@ -19,7 +21,7 @@ const SignUp = () => {
   const [role, setRole] = useState("student");
 
   const [loading, setLoading] = useState(false);
-
+  const dispatchEvent = useDispatch();
 
 
   const handleSignUp = async () => {
@@ -32,7 +34,7 @@ const SignUp = () => {
         password,
         role,
       },{withCredentials:true});
-      console.log(result.data);
+      dispatchEvent(setUserData(result.data));
       setLoading(false);
       navigate("/");
       toast.done("SignUp Successful");
