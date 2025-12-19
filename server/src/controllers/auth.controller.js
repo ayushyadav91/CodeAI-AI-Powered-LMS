@@ -34,18 +34,16 @@ if (!name || !email || !password) {
           });
 
           let token = await getToken(user); 
-         res.cookie("token", token, {
-    httpOnly: true,
-   secure: process.env.NODE_ENV === "production",
-    maxAge: 2000*60*60*24, // 24 hours
-    sameSite: "strict"
-});
-  
-return res.status(201).json(
-     new ApiResponse(201, 
-        user,
-    "User created successfully")
-);
+         res.cookie("token",token,{
+        httpOnly:true,
+        secure:true,
+        maxAge:2000*60*60*24,//3600 seconds
+        sameSite:"strict"
+    });
+         return res.status(201).json(
+                       new ApiResponse(201, 
+                                           user,
+                                    "User created successfully"));
 });
 
 //Login User
@@ -84,21 +82,28 @@ export const loginUser = asyncHandler(async(req ,res)=>{
 
 
 //Logout User
-export const logoutUser = asyncHandler(async(req ,res)=>{
-    res.cookie("token","",{
-        httpOnly:true,
-        secure:true,
-        maxAge:1000*60*60*24,//24 hours
-        sameSite:"strict"
-    });
-// await req.session.destroy();
-// req.session=null;
-// req.logout();
+// export const logoutUser = asyncHandler(async(req ,res)=>{
+//     // res.cookie("token","",{
+//     //     httpOnly:true,
+//     //     secure:true,
+//     //     maxAge:1000*60*60*24,//24 hours
+//     //     sameSite:"strict"
+//     // });
+// // await req.session.destroy();
+// // req.session=null;
+// // req.logout();
 // res.clearCookie("token");
-
-    return res.status(200).json(
-        new ApiResponse(200, 
-            null,
-        "User logged out successfully")
-    );
+//     return res.status(200).json(
+//         new ApiResponse(200, 
+//             null,
+//         "User logged out successfully")
+//     );
+// });
+export const logoutUser = asyncHandler(async(req ,res)=>{
+  res.clearCookie("token");
+  return res.status(200).json(
+      new ApiResponse(200, 
+          null,
+      "User logged out successfully")
+  );
 });
