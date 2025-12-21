@@ -100,10 +100,12 @@ export const loginUser = asyncHandler(async(req ,res)=>{
 //     );
 // });
 export const logoutUser = asyncHandler(async(req ,res)=>{
-  res.clearCookie("token");
-  return res.status(200).json(
-      new ApiResponse(200, 
-          null,
-      "User logged out successfully")
-  );
+
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: false, // localhost
+    sameSite: "lax",
+  });
+  res.json({ message: "Logout successful" });
+
 });

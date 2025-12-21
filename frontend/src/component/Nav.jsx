@@ -18,19 +18,16 @@ const Nav = () => {
     const { userData } = useSelector((state) => state.user);
     const navigate = useNavigate();
     const dispatchEvent = useDispatch(); 
+    const [show, setShow] = userState(false);
 
 
     const handleLogout = async () => { 
          console.log("LOGOUT CLICKED");
         try{
-            const result = await axios.post(`${serverUrl}/api/v1/auth/logout`,{withCredentials:true});
+    const result = await axios.post(`${serverUrl}/api/v1/auth/logout`,{},{withCredentials:true});
            dispatchEvent(setUserData(null));
             navigate("/");
-                        console.log(result.data);
-
-            toast.done(result.response.data || "Logout Successful");
-            toast.success(result.response.data || "Logout Successful");
-toast.success(result.data.message);
+           toast.success(result.data.message || "Logout Successful");
         }    
         catch(error){
             console.log(error);
