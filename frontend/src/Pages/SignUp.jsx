@@ -12,29 +12,39 @@ import { setUserData } from "../redux/userSlice";
 
 
 const SignUp = () => {
+  //password visibility state
   const [showPassword, setShowPassword] = useState(false);
+  //navigation state
   const navigate = useNavigate();
 
+  //first form state
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [role, setRole] = useState("student");
 
+  //loading state
   const [loading, setLoading] = useState(false);
+  //redux dispatch and user data state
   const dispatchEvent = useDispatch();
 
-
+  //handle sign up
   const handleSignUp = async () => {
+    //set loading to true
     setLoading(true);
     try {
-
+      //api call to register
      const result = await axios.post(`${serverUrl}/api/v1/auth/register`, {
         name,
         email,
         password,
         role,
       },{withCredentials:true});
-      dispatchEvent(setUserData(result.data));
+      //dispatch user data to redux
+      dispatchEvent(setUserData(result.data.data));
+
+      //set loading to false
       setLoading(false);
       navigate("/");
       toast.done("SignUp Successful");
@@ -43,8 +53,11 @@ const SignUp = () => {
       //   navigate("/");
       // }
     } catch (error) {
+      //log error
       console.log(error);
+      //set loading to false
       setLoading(false);
+      //show error toast
       toast.error(error.response.data.message);
     }
   };
@@ -54,9 +67,6 @@ const SignUp = () => {
       <form className="w-[90%] md:w-[800px] h-[620px] bg-white shadow-xl rounded-2xl flex overflow-hidden" 
       onSubmit={(e) => e.preventDefault()}
       >
-   
-
-   
         {/* LEFT SECTION */}
         <div className="md:w-1/2 w-full h-full flex flex-col justify-center items-center gap-4">
           

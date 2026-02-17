@@ -1,10 +1,10 @@
 import express from "express";
-import { createUser, loginUser, logoutUser } from "../controllers/auth.controller.js";
+import { createUser, loginUser, logoutUser, sentOTP,verifyOTP, resetPassword } from "../controllers/auth.controller.js";
 
 const authRouter = express.Router();
 import expressValidator, { body } from "express-validator";
 
-//>authRouter.use(expressValidator());
+
 
 authRouter.post("/register", 
     [body("name").isString(),
@@ -14,5 +14,9 @@ authRouter.post("/register",
 
 authRouter.post("/login", loginUser);
 authRouter.post("/logout", logoutUser);
+//Rest Password Routes
+authRouter.post("/sent-otp", sentOTP);
+authRouter.post("/verify-otp", verifyOTP);
+authRouter.post("/reset-password", resetPassword);
 
 export default authRouter;

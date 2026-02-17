@@ -24,6 +24,7 @@ app.use(express.urlencoded({
     extended: true
 }));
 app.use(express.static("public"));
+
 //cookie parser middleware
 app.use(cookieParser());
 

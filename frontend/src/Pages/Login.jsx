@@ -11,6 +11,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../redux/userSlice";
 
+
  
   
 const Login = () => {
@@ -32,7 +33,7 @@ const Login = () => {
            email,
            password,
          },{withCredentials:true});
-         dispatchEvent(setUserData(result.data));
+         dispatchEvent(setUserData(result.data.data));
          setLoading(false);
          navigate("/");
          toast.success("Login Successful");
@@ -55,8 +56,7 @@ const Login = () => {
           onSubmit={(e)=>e.preventDefault()}
           >
        
-    
-       
+  
             {/* LEFT SECTION */}
             <div className="md:w-1/2 w-full h-full flex flex-col justify-center items-center gap-4">
               
@@ -108,7 +108,9 @@ const Login = () => {
               </button>
 
               {/* FORGET PASSWORD */}
-              <span className=" ml-30 inline-block translate-x-4 -translate-y-2 text-[15px] cursor-pointer text-[#585757]  ">Forgot Password ?</span>
+              <span className=" ml-30 inline-block translate-x-4 -translate-y-2 text-[15px] cursor-pointer text-[#585757]  " 
+              onClick={()=>navigate("/forget")}
+              >Forgot Password ?</span>
     
               {/* DIVIDER */}
               <div className="w-[80%] flex items-center gap-3">

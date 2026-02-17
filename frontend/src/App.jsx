@@ -8,6 +8,10 @@ import getCurrentUser from './customHooks/getCurrentUser.js';
 import { use } from 'react';
 import { useSelector } from 'react-redux';
 import Profile from './Pages/Profile.jsx';
+import { RxHamburgerMenu } from "react-icons/rx";
+import { Navigate } from 'react-router-dom';
+import ForgetPassword from './Pages/ForgetPassword.jsx';
+
 
 export const serverUrl = "http://localhost:2030";
 
@@ -15,16 +19,17 @@ export const serverUrl = "http://localhost:2030";
 
 function App() {
   getCurrentUser();
-
-  // const {userData} = useSelector((state) => state.user);
+  const {userData} = useSelector((state) => state.user);
   return (
+    
     <>
     <ToastContainer />
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route path="/signup" element={!userData ? <SignUp /> : <Navigate to={"/"}/>}/>
+      <Route path="/profile" element={userData?<Profile /> : <Navigate to={"/signup"}/>} />
+      <Route path="/forget" element={!userData ? <ForgetPassword /> : <Navigate to={"/signup"}/>} />
     </Routes>
     
     </>
