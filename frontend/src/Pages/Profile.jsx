@@ -1,115 +1,64 @@
-import React, { useState, useEffect } from 'react';
-import { CheckCircle, Clock, AlertCircle } from 'lucide-react';
+import { useSelector } from "react-redux";
+import { FaArrowCircleLeft } from "react-icons/fa";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+// import axios from "axios";
 
-export default function TicketManagementUI() {
-  const [currentUser, setCurrentUser] = useState('user');
-  const [showSidebar, setShowSidebar] = useState(true);
-  const [activeTab, setActiveTab] = useState('tickets');
-  const [showCreateModal, setShowCreateModal] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [tickets, setTickets] = useState([]);
-  const [newTicket, setNewTicket] = useState({ title: '', description: '' });
 
-  
-  /*================= FETCH TICKETS =================*/
-  useEffect(() => {
-    fetchTickets();
-  }, []);
 
-  const fetchTickets = async () => {
-    try {
-      const token = localStorage.getItem('authToken');
-      const res = await fetch('http://localhost:3000/api/tickets', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-         },
-      });
-      if (!res.ok) throw new Error('Failed to fetch tickets');
-      const data = await res.json();
-      // 🔁 Map backend → UI format (NO UI CHANGE)
-      const mapped = data.map(ticket => ({
-        id: ticket._id,
-        title: ticket.title,
-        status: ticket.status.toLowerCase().replace('_', '-'),
-        priority: ticket.priority,
-        category: ticket.relatedSkills?.[0] || 'General',
-        assignee: ticket.assignedTo ? 'Assigned' : 'Unassigned',
-        date: new Date(ticket.createdAt).toISOString().split('T')[0],
-      }));
+function Profile() {
 
-      setTickets(mapped);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  const { userData } = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
-  /* ================= CREATE TICKET ================= */
-  const handleCreateTicket = async () => {
-    if (!newTicket.title || !newTicket.description) return;
-
-    try {
-      const token = localStorage.getItem('authToken');
-
-      const res = await fetch('http://localhost:3000/api/tickets', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(newTicket),
-      });
-
-      if (!res.ok) throw new Error('Create ticket failed');
-
-      const ticket = await res.json();
-
-      const mappedTicket = {
-        id: ticket._id,
-        title: ticket.title,
-        status: ticket.status.toLowerCase().replace('_', '-'),
-        priority: ticket.priority,
-        category: ticket.relatedSkills?.[0] || 'General',
-        assignee: ticket.assignedTo ? 'Assigned' : 'Unassigned',
-        date: new Date(ticket.createdAt).toISOString().split('T')[0],
-      };
-
-      setTickets([mappedTicket, ...tickets]);
-      setNewTicket({ title: '', description: '' });
-      setShowCreateModal(false);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  /* ================= HELPERS ================= */
-  const getPriorityColor = (priority) => {
-    const colors = {
-      critical: 'bg-red-100 text-red-800',
-      high: 'bg-orange-100 text-orange-800',
-      medium: 'bg-yellow-100 text-yellow-800',
-      low: 'bg-green-100 text-green-800'
-    };
-    return colors[priority] || 'bg-gray-100 text-gray-800';
-  };
-
-  const getStatusIcon = (status) => {
-    if (status === 'closed') return <CheckCircle className="w-5 h-5 text-green-500" />;
-    if (status === 'in-progress') return <Clock className="w-5 h-5 text-blue-500" />;
-    return <AlertCircle className="w-5 h-5 text-orange-500" />;
-  };
-
-  const filteredTickets = tickets.filter(t =>
-    t.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  /* ================= UI (UNCHANGED) ================= */
   return (
-    <div className="flex h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      {/* UI CODE EXACTLY SAME AS YOURS */}
-      {/* NOTHING CHANGED BELOW */}
-      {/* Sidebar, Header, Ticket Cards, Modal — untouched */}
+    <div className="min-h-screen bg-gray-100 px-4 py-10 flex items-center justify-center">
+      <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
+        <FaArrowCircleLeft className="w-10 h-10 cursor-pointer" onClick={() => navigate("/")} />
+        <div className="flex flex-col items-center text-center">
+          {userData?.photoUrl ? <img src={userData?.photoUrl} alt="" className="w-32 h-32 rounded-full object-cover border-2 border-black" /> :
+            <div className="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center">
+              <span className="text-4xl font-bold text-gray-500">{userData?.name?.slice(0, 1)?.toUpperCase()}</span>
+            </div>
+          }
+          <h2 className="text-2xl font-bold text-gray-800 mt-4">{userData?.name}</h2>
+          <p className="text-black font-bold">{userData?.role.toUpperCase()}</p>
+          <p className="text-gray-600">{userData?.description}</p>
+        </div>
+
+        <div className="mt-4">
+          <div>
+            <span className="font-semibold">Email:</span>
+            <span>{userData?.email}</span>
+          </div>
+
+          <div>
+            <span className="font-semibold">Bio:</span>
+            <span>{userData?.description}  </span>
+          </div>
+          <div>
+            <span className="font-semibold">Enrolled Courses: </span>
+            <span>{userData?.enrollCourses?.length}</span>
+          </div>
+        </div>
+    <div className="flex items-center justify-center">
+    <button className="bg-black/80 text-white px-4 py-2 rounded mt-4 cursor-pointer hover:bg-black/60 transition-colors duration-300 "
+    onClick={()=>navigate("/editprofile")}
+    >Edit Profile</button>
     </div>
-  );
-}
+    </div>
+    </div>
+  )
+};
+export default Profile;
+
+// function profile(){
+//   return (
+//     <div>
+//       <h1>fdsjfhdsfdsf </h1>
+//     </div>
+//   )
+
+// }
+
+// export default profile;

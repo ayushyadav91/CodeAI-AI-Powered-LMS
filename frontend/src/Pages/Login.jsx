@@ -10,6 +10,8 @@ import { ClipLoader } from "react-spinners";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../redux/userSlice";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../utils/firebase";
 
 
  
@@ -32,6 +34,7 @@ const Login = () => {
          const result = await axios.post(`${serverUrl}/api/v1/auth/login`, {
            email,
            password,
+
          },{withCredentials:true});
          dispatchEvent(setUserData(result.data.data));
          setLoading(false);
@@ -49,6 +52,34 @@ const Login = () => {
 
         }
       };
+
+    const  googleLogin = async () => {
+    setLoading(true);
+    try {
+      const response = await signInWithPopup(auth,provider);
+      console.log(response);
+      let user = response.user;
+      let name = user.displayName;
+      let email = user.email;
+      let role = "";
+      const result = await axios.post(`${serverUrl}/api/v1/auth/google-auth`, {
+        name,
+        email,
+        role,
+      },{withCredentials:true});
+
+     
+    
+      dispatchEvent(setUserData(result.data.data));
+      setLoading(false);
+      navigate("/");
+      toast.done("SignUp Successful" || "Google SignUp Successful");
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      toast.error(error.message);
+    }
+  }
   return (
 
      <div className="bg-[#dddbdb] w-screen h-screen flex items-center justify-center">
@@ -122,7 +153,9 @@ const Login = () => {
               </div>
     
               {/* GOOGLE BUTTON */}
-              <div className="w-[70%] h-[40px] border rounded-md flex items-center justify-center gap-2 cursor-pointer">
+              <div className="w-[70%] h-[40px] border rounded-md flex items-center justify-center gap-2 cursor-pointer"
+              onClick={googleLogin}
+              >
                 <img src={google} alt="google" className="w-5 h-5" />
                 <span className="text-sm text-gray-600">
                   Continue with Google

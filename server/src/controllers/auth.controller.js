@@ -160,3 +160,35 @@ export const resetPassword = asyncHandler(async (req, res) => {
   await user.save();
   return res.status(200).json(new ApiResponse(200, null, "Password reset successfully"));
 });
+
+export const googleAuth = asyncHandler(async (req, res) => {
+  // Implement Google OAuth logic here
+  const {name, email,role} = req.body; 
+  let user = await User.findOne({ email });
+  if (!user) {
+    user = await User.create({
+      name,
+      email,
+      role,
+    });
+
+
+    let token = await getToken(user._id);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      maxAge: 2000 * 60 * 60 * 24*7,
+      sameSite: "strict"
+    });
+    return res.status(201).json(new ApiResponse(201, newUser, "User created successfully"));
+  }
+  const token = await getToken(user);
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: true,
+    maxAge: 2000 * 60 * 60 * 24,//3600 seconds
+    sameSite: "strict"
+  });
+  return res.status(200).json(new ApiResponse(200, user, "User logged in successfully"));
+}
+);

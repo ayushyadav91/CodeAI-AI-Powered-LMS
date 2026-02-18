@@ -1,5 +1,5 @@
 import express from "express";
-import { createUser, loginUser, logoutUser, sentOTP,verifyOTP, resetPassword } from "../controllers/auth.controller.js";
+import { createUser, loginUser, logoutUser, sentOTP,verifyOTP, resetPassword, googleAuth} from "../controllers/auth.controller.js";
 
 const authRouter = express.Router();
 import expressValidator, { body } from "express-validator";
@@ -18,5 +18,6 @@ authRouter.post("/logout", logoutUser);
 authRouter.post("/sent-otp", sentOTP);
 authRouter.post("/verify-otp", verifyOTP);
 authRouter.post("/reset-password", resetPassword);
+authRouter.post("/google-auth", googleAuth);
 
 export default authRouter;
