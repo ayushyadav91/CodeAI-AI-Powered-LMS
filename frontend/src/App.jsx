@@ -14,13 +14,10 @@ import EditProfile from './Pages/EditProfile.jsx';
 
 export const serverUrl =  "http://localhost:2030";
 
-
-
 function App() {
   getCurrentUser();
   const {userData} = useSelector((state) => state.user);
   return (
-    
     <>
     <ToastContainer />
     <Routes>
