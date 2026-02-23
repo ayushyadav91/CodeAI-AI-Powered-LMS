@@ -64,7 +64,8 @@ const Nav = () => {
     {userData.name?.[0]?.toUpperCase()}
   </div>
 )}
-        {userData?.role == "educator" && <button className='px-[20px] py-[7px] bg-gradient-to-r from-cyan-500 to-blue-500 rounded-[10px] text-[16px] font-light text-white cursor-pointer hover:shadow-lg hover:shadow-cyan-500/30 transition-all duration-300'>
+        {userData?.role == "educator" && <button className='px-[20px] py-[7px] bg-gradient-to-r from-cyan-500 to-blue-500 rounded-[10px] text-[16px] font-light text-white cursor-pointer hover:shadow-lg hover:shadow-cyan-500/30 transition-all duration-300'
+          onClick={() => navigate("/dashboard")}>
           Dashboard
         </button>}
 
@@ -114,7 +115,8 @@ const Nav = () => {
             <span className="block px-4 py-2 text-sm text-gray-200 hover:bg-cyan-500/10 hover:text-cyan-400 cursor-pointer transition-all duration-200">
               My Courses
             </span>
-            {userData?.role == "educator" && <span className="block px-4 py-2 text-sm text-gray-200 hover:bg-cyan-500/10 hover:text-cyan-400 cursor-pointer transition-all duration-200">
+            {userData?.role == "educator" && <span className="block px-4 py-2 text-sm text-gray-200 hover:bg-cyan-500/10 hover:text-cyan-400 cursor-pointer transition-all duration-200"
+            onClick={()=> navigate("/dashboard")}>
               Dashboard
             </span>}
             <span className="block px-4 py-2 text-sm text-gray-200 hover:bg-cyan-500/10 hover:text-cyan-400 cursor-pointer transition-all duration-200" onClick={() => { handleLogout(); setShowMobileMenu(false); }}>

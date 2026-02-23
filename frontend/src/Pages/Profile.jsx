@@ -12,8 +12,8 @@ function Profile() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gray-100 px-4 py-10 flex items-center justify-center">
-      <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
+    <div className="min-h-screen bg-gray-100 px-4 py-10 flex items-center justify-center bg-gradient-to-br from-black to-blue-500">
+      <div className="bg-gray-200 backdrop-blur-md rounded-lg shadow-lg p-8 max-w-md w-full">
         <FaArrowCircleLeft className="w-10 h-10 cursor-pointer" onClick={() => navigate("/")} />
         <div className="flex flex-col items-center text-center">
           {userData?.photoUrl ? <img src={userData?.photoUrl} alt="" className="w-32 h-32 rounded-full object-cover border-2 border-black" /> :
@@ -23,7 +23,7 @@ function Profile() {
           }
           <h2 className="text-2xl font-bold text-gray-800 mt-4">{userData?.name}</h2>
           <p className="text-black font-bold">{userData?.role.toUpperCase()}</p>
-          <p className="text-gray-600">{userData?.description}</p>
+        
         </div>
 
         <div className="mt-4">

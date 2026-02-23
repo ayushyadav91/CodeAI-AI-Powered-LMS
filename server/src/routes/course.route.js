@@ -9,7 +9,7 @@ const courseRouter = express.Router();
 courseRouter.post("/create", isAuth, createCourse);
 courseRouter.get("/published", getPublishedCourse);
 courseRouter.get("/getcreator", isAuth, getCreatorCourses);
-courseRouter.post("/editcourse/:courseId", isAuth, upload.single("thumbnail"), editCourse);
+courseRouter.put("/editcourse/:courseId", isAuth, upload.single("thumbnail"), editCourse);
 courseRouter.get("/getcourse/:id", isAuth, getCourseById);
 courseRouter.delete("/:id", isAuth, removeCourse);
 

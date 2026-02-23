@@ -10,11 +10,11 @@ const courseSchema = new mongoose.Schema({
     },
     subtitle: {
         type: String,
-        required: true
+        
     },
     description: {
         type: String,
-        required: true
+        
     },
     category:{
         type: String,
@@ -40,7 +40,9 @@ const courseSchema = new mongoose.Schema({
     }],
     creator:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
+       
     },
     isPublished:{
         type: Boolean,

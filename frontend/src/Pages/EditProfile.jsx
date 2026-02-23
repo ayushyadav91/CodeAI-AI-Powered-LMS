@@ -41,13 +41,13 @@ function EditProfile() {
 
     } 
     return (
-        <div className="min-h-screen bg-gray-100 px-4 py-10 flex items-center justify-center">
-            <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
+        <div className="min-h-screen bg-gray-100 px-4 py-10 flex items-center justify-center  bg-gradient-to-br from-black to-blue-500">
+            <div className="bg-gray-200 backdrop-blur-md rounded-lg shadow-lg p-8 max-w-md w-full">
                 <div >
                 <FaArrowCircleLeft className="w-10 h-10 cursor-pointer" onClick={() => navigate("/")} />
                 <h2 className="text-2xl font-bold text-gray-800 mt-4 text-center border-b-2 border-black pb-2 ">Edit Your Profile</h2>
                 </div>
-                <form  onSubmit={(e)=>e.preventDefault()}>
+                <form  onSubmit={(e)=>e.preventDefault() }>
                     <div className="flex flex-col items-center text-center mt-5">
                         {userData?.photoUrl ? <img src={userData?.photoUrl} alt="" className="w-32 h-32 rounded-full object-cover border-2 border-black shadow-lg shadow-black/50" /> :
                             <div className="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center">
