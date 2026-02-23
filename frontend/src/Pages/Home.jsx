@@ -3,6 +3,7 @@ import Nav from '../components/Nav';
 import { FiArrowRight, FiCode, FiZap, FiTarget } from 'react-icons/fi';
 import { FaBrain } from "react-icons/fa";
 import Snowfall from 'react-snowfall';
+import ExploreCources from '../components/ExploreCources';
 
 
 
@@ -123,8 +124,11 @@ function Home() {
             </svg>
           </div>
         </div>
+      
       </section>
-
+      <section className="relative py-30 px-5 max-w-7xl mx-auto" >
+       <ExploreCources/>
+      </section>
       {/* Features Section */}
       <section className="relative py-20 px-6 max-w-7xl mx-auto">
         <div className="text-center mb-16">

@@ -43,12 +43,27 @@ const Nav = () => {
 
       {/* RIGHT - MENU - DESKTOP */}
       <div className='hidden md:flex items-center gap-4'>
-        {!userData && <IoPersonCircleSharp className='w-[50px] h-[60px] cursor-pointer text-gray-300 hover:text-cyan-400 transition-colors duration-300' onClick={() => setShow(prev => !prev)} />}
-       {userData?.photoUrl  ? <img src={userData?.photoUrl} alt="" className='w-[50px] h-[50px] rounded-full text-white flex items-center justify-center text-[20px] 
-     border-2 bg-gradient-to-br from-cyan-500 to-blue-500 border-cyan-400/50 cursor-pointer hover:border-cyan-400 transition-all duration-300' onClick={() => setShow(prev => !prev)} /> : 
-        <div className='w-[50px] h-[50px] rounded-full text-white flex items-center justify-center text-[20px] 
-     border-2 bg-gradient-to-br from-cyan-500 to-blue-500 border-cyan-400/50 cursor-pointer hover:border-cyan-400 transition-all duration-300' onClick={() => setShow(prev => !prev)} >  {userData?.name?.[0]?.toUpperCase()}</div>}
-
+       {!userData ? (
+  <IoPersonCircleSharp
+    className='w-[50px] h-[60px] cursor-pointer text-gray-300 hover:text-cyan-400 transition-colors duration-300'
+    onClick={() => setShow(prev => !prev)}
+  />
+) : userData.photoUrl ? (
+  <img
+    src={userData.photoUrl}
+    alt=""
+    className='w-[50px] h-[50px] rounded-full border-2 bg-gradient-to-br from-cyan-500 to-blue-500 border-cyan-400/50 cursor-pointer hover:border-cyan-400 transition-all duration-300'
+    onClick={() => setShow(prev => !prev)}
+  />
+) : (
+  <div
+    className='w-[50px] h-[50px] rounded-full text-white flex items-center justify-center text-[20px] 
+    border-2 bg-gradient-to-br from-cyan-500 to-blue-500 border-cyan-400/50 cursor-pointer hover:border-cyan-400 transition-all duration-300'
+    onClick={() => setShow(prev => !prev)}
+  >
+    {userData.name?.[0]?.toUpperCase()}
+  </div>
+)}
         {userData?.role == "educator" && <button className='px-[20px] py-[7px] bg-gradient-to-r from-cyan-500 to-blue-500 rounded-[10px] text-[16px] font-light text-white cursor-pointer hover:shadow-lg hover:shadow-cyan-500/30 transition-all duration-300'>
           Dashboard
         </button>}
@@ -92,7 +107,8 @@ const Nav = () => {
           </span>}
           
           {userData && <>
-            <span className="block px-4 py-2 text-sm text-gray-200 hover:bg-cyan-500/10 hover:text-cyan-400 cursor-pointer transition-all duration-200">
+            <span className="block px-4 py-2 text-sm text-gray-200 hover:bg-cyan-500/10 hover:text-cyan-400 cursor-pointer transition-all duration-200"
+            onClick={() => { navigate("/profile") }}>
               My Profile
             </span>
             <span className="block px-4 py-2 text-sm text-gray-200 hover:bg-cyan-500/10 hover:text-cyan-400 cursor-pointer transition-all duration-200">
