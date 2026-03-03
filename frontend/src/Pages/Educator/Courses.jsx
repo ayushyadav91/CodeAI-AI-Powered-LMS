@@ -10,11 +10,13 @@ import { setCreaterCourseData } from '../../redux/courseSlice.js';
 import { useSelector } from 'react-redux';
 
 
+
 const Courses = () => {
     const navigate = useNavigate();
     const createrCourseData = useSelector((state) => state.course.createrCourseData);
     const userData = useSelector((state) => state.user.userData);
     const dispatch = useDispatch();
+   
    useEffect(() => {
 if (!userData?._id) return; // wait until userData is loaded
   const fetchCreatorCourses = async () => {
@@ -71,7 +73,7 @@ if (!userData?._id) return; // wait until userData is loaded
                                     {/* Course Thumbnail + Title */}
                                     <td className=" flex px-4 py-3">
                                         <img
-                                            src={course?.thumbnail || image}
+                                            src={course?.thumbnailUrl || image}
                                             alt={course?.title}
                                             className="w-24 h-16 object-cover rounded-md"
                                         />
@@ -130,7 +132,7 @@ if (!userData?._id) return; // wait until userData is loaded
                             {/* Top Section */}
                             <div className='flex gap-4 items-center'>
                                 <img
-                                    src={course.thumbnail || image}
+                                    src={course.thumbnailUrl || image}
                                     alt={course.title}
                                     className="w-20 h-14 object-cover rounded-md"
                                 />

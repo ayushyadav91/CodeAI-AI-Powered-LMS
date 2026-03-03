@@ -14,6 +14,7 @@ import Courses from './Pages/Educator/Courses.jsx';
 import CreateCource from './Pages/Educator/CreateCource.jsx';
 import getCreaterCourse from './customHooks/getCreaterCourse.js';
 import  EditCourses from './Pages/Educator/EditCourses.jsx';
+import getPublishedCourse from './customHooks/getPublishedCourse.js';
 
 
 
@@ -22,7 +23,8 @@ export const serverUrl =  "http://localhost:2030";
 function App() {
   getCurrentUser();
   getCreaterCourse();
- 
+  getPublishedCourse();
+
   const {userData} = useSelector((state) => state.user);
   return (
     <>
@@ -38,7 +40,7 @@ function App() {
       <Route path="/dashboard" element={userData?.role === "educator" ? <Dashboard /> : <Navigate to={"/signup"}/>} />
       <Route path="/courses" element={userData?.role === "educator" ? <Courses /> : <Navigate to={"/signup"}/>} />
        <Route path="/createcourse" element={userData?.role === "educator" ? <CreateCource /> : <Navigate to={"/signup"}/>} />
-       <Route path="/editcourse/:id" element={userData?.role === "educator" ? < EditCourses /> : <Navigate to={"/signup"}/>} />
+       <Route path="/editcourse/:courseId" element={userData?.role === "educator" ? < EditCourses /> : <Navigate to={"/signup"}/>} />
     </Routes>
     </>
   )

@@ -4,6 +4,7 @@ import { FiArrowRight, FiCode, FiZap, FiTarget } from 'react-icons/fi';
 import { FaBrain } from "react-icons/fa";
 import Snowfall from 'react-snowfall';
 import ExploreCources from '../components/ExploreCources';
+import CardPage from '../components/CardPage';
 
 
 
@@ -49,7 +50,7 @@ function Home() {
   ];
 
   return (
-    <div className="w-full overflow-hidden bg-black text-white" >
+    <div className="w-full overflow-hidden bg-gray-900 text-white" >
       {isSnowing && <Snowfall />}
       {/* Navigation */}
       <Nav />
@@ -129,6 +130,12 @@ function Home() {
       <section className="relative py-30 px-5 max-w-7xl mx-auto" >
        <ExploreCources/>
       </section>
+      <section className="relative py-20 px-6 max-w-7xl mx-auto">
+        <div className="text-center mb-16">
+          <CardPage/>
+                
+        </div>
+      </section>
       {/* Features Section */}
       <section className="relative py-20 px-6 max-w-7xl mx-auto">
         <div className="text-center mb-16">
@@ -199,7 +206,6 @@ function Home() {
           <div className="relative rounded-2xl overflow-hidden">
             {/* Background glow */}
             <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-30 blur-2xl" />
-
             {/* Content */}
             <div className="relative bg-black/80 backdrop-blur-xl border border-cyan-500/20 rounded-2xl p-12 text-center">
               <h2 className="text-4xl md:text-5xl font-black mb-6">Ready to Transform Your Career?</h2>

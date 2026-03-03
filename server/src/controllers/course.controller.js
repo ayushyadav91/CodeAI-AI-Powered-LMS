@@ -6,6 +6,8 @@ import uploadOnCloudinary  from "../config/cloudStorage.js";
 import mongoose from "mongoose";
 
 
+
+
 export const createCourse = asyncHandler(async (req, res) => {
   const { title,  category} = req.body;
   const createdId = req.user.id||req.userId;
@@ -45,6 +47,7 @@ const courses = await Course.find({
 
 });
 
+
 // export  const editCourse = asyncHandler(async(req,res)=>{
 //     const courseId = req.params.id;
 //     const {title, subtitle, description, category, level, isPublished, price} = req.body;
@@ -72,7 +75,9 @@ const courses = await Course.find({
 // });
 
 export const editCourse = asyncHandler(async (req, res) => {
-   const { id } = useParams();  // ✅ FIXED
+   const { courseId } = req.params;
+
+   console.log(courseId);
 
     const { title, subtitle, description, category, level, isPublished, price } = req.body;
 
@@ -82,7 +87,7 @@ export const editCourse = asyncHandler(async (req, res) => {
         thumbnailUrl = await uploadOnCloudinary(req.file.path);
     }
 
-    let course = await Course.findById(id);
+    let course = await Course.findById(courseId);
 
     if (!course) {
         throw new ApiError(404, "Course not found");
@@ -117,15 +122,16 @@ export const getCourseById = asyncHandler(async(req,res)=>{
     if(!course){
         throw new ApiError(404,"Course not found");
     }
-    return res.status(200).json(new ApiResponse("Course fetched successfully", course));
+    return res.status(200).json(new ApiResponse(200, course, "Course fetched successfully"));
 });
 
 export const removeCourse = asyncHandler(async(req,res)=>{
-    const courseId = req.params.id;
+    const courseId = req.params.courseId;
+    console.log("Course ID to remove:", courseId);  
     const course = await Course.findById(courseId);
     if(!course){
         throw new ApiError(404,"Course not found");
     }
-    await course.remove();
+    await Course.findByIdAndDelete(courseId,{new:true});
     return res.status(200).json(new ApiResponse("Course removed successfully"));
 });

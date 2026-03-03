@@ -6,11 +6,17 @@ import { TbPhotoEdit } from "react-icons/tb";
 import axios from "axios";
 import { serverUrl } from "../../App";
 import { toast } from "react-toastify";
+import { useSelector } from 'react-redux';
+
 
 const EditCourses = () => {
   const navigate = useNavigate();
+   const { createrCourseData } = useSelector((state) => state.course);
+     console.log("Fetched courses:", createrCourseData);
   const { courseId } = useParams();
   const [loading, setLoading] = useState(false);
+  //useState to set the loading state for the remove course button
+  const [loding2, setLoding2] = useState(false);
 
   const [isPublished, setIsPublished] = useState(false);
   const thumb = useRef();
@@ -21,7 +27,7 @@ const EditCourses = () => {
   const [category, setCategory] = useState("");
   const [level, setLevel] = useState("");
   const [price, setPrice] = useState("");
-  const [frontendImage, setFrontendImage] = useState(null);
+  const [frontendImage, setFrontendImage] = useState(image);
   const [backendImage, setBackendImage] = useState(null);
 
   const handleThumbnailChange = (e) => {
@@ -33,9 +39,11 @@ const EditCourses = () => {
   const getCourseById = async () => {
     try {
       const result = await axios.get(
-        `${serverUrl}/api/v1/course/getcourse/${id}`,
+        `${serverUrl}/api/v1/course/getcourse/${courseId}`,
         { withCredentials: true }
+
       );
+      console.log("Course data fetched:", result.data);
       const course = result.data.data;
       setTitle(course.title || "");
       setSubtitle(course.subtitle || "");
@@ -44,10 +52,14 @@ const EditCourses = () => {
       setLevel(course.level || "");
       setPrice(course.price || "");
       setIsPublished(course.isPublished || false);
-      setFrontendImage(course.thumbnail || null);
+      setFrontendImage(course.thumbnailUrl || image);
+      setBackendImage(null);
+
     } catch (err) {
       console.error(err);
     }
+
+
   };
 
   useEffect(() => {
@@ -59,8 +71,10 @@ const EditCourses = () => {
       setLevel(selectCourse.level || "");
       setPrice(selectCourse.price || "");
       setIsPublished(selectCourse.isPublished || false);
-      setFrontendImage(selectCourse.thumbnail || image);
-      setBackendImage(selectCourse?.thumbnail || null);
+      if (selectCourse) {
+    setFrontendImage(selectCourse.thumbnailUrl || image);
+    setBackendImage(null); // file only on new upload
+  }
     }
   }, [selectCourse]);
 
@@ -79,8 +93,12 @@ const EditCourses = () => {
     formData.append("category", category);
     formData.append("level", level);
     formData.append("price", price);
-    formData.append("thumbnail", backendImage);
     formData.append("isPublished", isPublished);
+    if (backendImage) {
+      formData.append("thumbnail", backendImage);
+    }
+
+    
 
     try {
       const result = await axios.put(
@@ -97,7 +115,28 @@ const EditCourses = () => {
       toast.error("Failed to update course");
     }
   };
+// useEffect(() => {
+//   console.log("Frontend image:", frontendImage);
+// }, [frontendImage]);
 
+
+const handleRemoveCourse = async () => {
+    setLoding2(true);
+ try{
+  console.log("Removing course with ID:", courseId);
+  const result = await axios.delete(
+    `${serverUrl}/api/v1/course/remove/${courseId}`,
+    { withCredentials: true }
+  );
+  setLoding2(false);
+  toast.success("Course removed successfully");
+  navigate("/courses");
+  console.log("Course removed:", result.data);
+ } catch(err){
+  console.error(err);
+  toast.error("Failed to remove course");
+ }
+};
   return (
     <div className='min-h-screen bg-gray-100 py-8 px-4'>
       <div className='max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden'>
@@ -137,11 +176,28 @@ const EditCourses = () => {
             >
               {!isPublished ? 'Click to Publish' : 'Click to Unpublish'}
             </button>
-            <button className="bg-red-500 text-white px-4 py-1.5 rounded-lg hover:bg-red-600 transition text-sm font-medium">
-              Remove Course
+             
+             <button className="bg-red-500 text-white px-4 py-1.5 rounded-lg hover:bg-red-600 transition text-sm font-medium"
+             onClick={handleRemoveCourse}
+             disabled={loding2}
+             >
+              {loding2 ? "Removing..." : "Remove Course"}
+          
             </button>
+            
           </div>
 
+          {/* Title */}
+          <div>
+            <label className='block text-sm font-medium text-gray-700 mb-1'>Course Title</label>
+            <input
+              type="text"
+              className='w-full border border-gray-300 bg-white rounded-md p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500'
+              placeholder='Enter the title'
+              onChange={(e) => setTitle(e.target.value)}
+              value={title}
+            />
+          </div>
           {/* Subtitle */}
           <div>
             <label className='block text-sm font-medium text-gray-700 mb-1'>Subtitle</label>
